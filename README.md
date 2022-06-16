@@ -1,0 +1,31 @@
+### Example of running Serverless with IBM Cloud Functions (OpenWhisk) 
+
+
+This is a small example of using [IBM Cloud Functions](https://cloud.ibm.com/functions/) to create a sample flow with different Actions with some Sequences that utilise IBM MQ, Cloudant DB and is writen in Java, PHP, and JavaScript 
+
+---
+
+#### Prerequistes:
+- An [IBM Cloud Account](https://cloud.ibm.com)
+- The [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
+- A separate instance of [IBM MQ](https://www.ibm.com/products/mq) to allow for triggering.  A [containerized IBM MQ](https://hub.docker.com/r/ibmcom/mq/) can be used, as well.
+
+---
+#### Setup Cloudant
+All the steps can be done through the console.  Some, but not all, can be done using the CLI
+
+Create an [instance](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-creating-an-ibm-cloudant-instance-on-ibm-cloud-by-using-the-ibm-cloud-cli
+):
+- login to the IBM Cloud and select which account to use (`ibmcloud login`)
+- Target the resource (`ibmcloud target -g default`)
+- Create an instance called `cloudant-serverless` (`ibmcloud resource service-instance-create cloudant-serverless cloudantnosqldb lite us-south -p '{"legacyCredentials": false}'
+- Generate the credentials (`ibmcloud resource service-key-create serverless-creds Manager --instance-name cloudant-serverless`)
+- Show the credentials (`ibmcloud resource service-key serverless-creds`)
+
+The next steps need to be done in the Console UI.
+- Select the `cloudant-serverless` instance of the DB
+- Click on `Launch Dashboard` blue button in the upper right.  This will open the Cloudant instance in a new panel.
+- Click on `Create Database` in the upper right, which will then review a panel.
+- Enter the name of the database as `eurovision` and click `Create`
+
+---
