@@ -1,0 +1,13 @@
+{
+  "qmgrHostName": "paskinocam.us",
+  "qmgrPort": 9414,
+  "qmgrName": "SERVERLESS",
+  "qmgrChannelName": "SERVERLESS.SVRCONN",
+  "username": "brian",
+  "password": "0xN7OUX3F2LCzixnjtqv_Abvt5FlA177vqWqwg-uOxyc",
+  "queueName": "EUROVISION",
+  "dbname": "eurovision",
+  "iamApiKey": "g0Ki7iHk4eP4RTcE02UKa4k-4kItvJdnJ5GpoGhyYyrC",
+  "url":"https://5de7608c-fce3-420d-b007-43f46e05d996-bluemix.cloudantnosqldb.appdomain.cloud",
+  "serviceName":"cloudant-serverless"
+}
