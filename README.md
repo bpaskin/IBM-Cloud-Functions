@@ -8,7 +8,7 @@ This is a small example of using [IBM Cloud Functions](https://cloud.ibm.com/fun
 #### Prerequistes:
 - An [IBM Cloud Account](https://cloud.ibm.com)
 - The [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
-- A separate instance of [IBM MQ](https://www.ibm.com/products/mq) to allow for triggering.  A [containerized IBM MQ](https://hub.docker.com/r/ibmcom/mq/) can be used, as well.
+- A separate instance of [IBM MQ](https://www.ibm.com/products/mq) to allow for triggering and is available on the internet for requests.  A [containerized IBM MQ](https://hub.docker.com/r/ibmcom/mq/) can be used, as well.
 
 ---
 #### Setup Cloudant
@@ -29,3 +29,59 @@ The next steps need to be done in the Console UI.
 - Enter the name of the database as `eurovision` and click `Create`
 
 ---
+#### Update the configuration file
+The configuration file can be found in `src/main/java/configuration.json` and must be updated for proper functioning of the Actions.  Only the values in the `< >` symbols need to be updated.
+
+```
+{
+  "qmgrHostName": "<qmghostname>",
+  "qmgrPort": <port>,
+  "qmgrName": "SERVERLESS",
+  "qmgrChannelName": "SERVERLESS.SVRCONN",
+  "username": "username",
+  "password": "password",
+  "queueName": "EUROVISION",
+  "dbname": "eurovision",
+  "iamApiKey": "<iam key from Cloudant>",
+  "url":"<URL for Cloudant>",
+  "serviceName":"cloudant-serverless"
+}
+```
+
+---
+#### Create the Cloud Functions Actions
+```
+ibmcloud fn package create Eurovision
+ibmcloud fn package bind /whisk.system/cloudant Eurovision-Cloudant --param dbname eurovision
+ibmcloud fn service bind cloudantnosqldb  Eurovision-Cloudant --instance cloudant-serverless  --keyname 'serverless-creds'
+ibmcloud fn action create Eurovision/voteui vote.php --web true
+ibmcloud fn action create Eurovision/vote target/Eurovision-1.0-jar-with-dependencies.jar --main com.ibm.example.serverless.AcceptVote
+ibmcloud fn action create Eurovision/putQueue target/Eurovision-1.0-jar-with-dependencies.jar --main com.ibm.example.serverless.SendToQueue -P src/main/java/configuration.json
+ibmcloud fn action create Eurovision/voting --sequence Eurovision/vote,Eurovision/putQueue --web true
+ibmcloud fn action create Eurovision/getQueue target/Eurovision-1.0-jar-with-dependencies.jar --main com.ibm.example.serverless.RetrieveFromQueue -P src/main/java/configuration.json
+ibmcloud fn action create Eurovision/updatingDB --sequence Eurovision/getQueue,Eurovision-Cloudant/create-document --web true
+ibmcloud fn action create Eurovision/resultsQuery target/Eurovision-1.0-jar-with-dependencies.jar --main com.ibm.example.serverless.QueryVotesByCountry -P src/main/java/configuration.json --web true --memory 512
+ibmcloud fn action create Eurovision/resultsui results.php --web true
+```
+
+Endpoints:
+- Web page for voting: `ibmcloud fn action get Eurovision/voteui --url`
+- Web page for results: `ibmcloud fn action get Eurovision/resultsui --url`
+- Trigger endpoint for MQ: `ibmcloud fn action get Eurovision/updatingDB --url`
+
+---
+#### IBM MQ Setup
+This will setup a new QMGR that will accept messages for voting and then trigger and call the `Eurovision/updatingDB` endpoint to process messages
+
+The `EUROVISION.TRIGGER` in the `serverless.mqsc` file will need to be updated with the proper URL from the `Eurovision/updatingDB` Action.
+
+- Create the QMGR: `/usr/mqm/bin/crtmqm SERVERLESS`
+- Start the QMGR: `/usr/mqm/bin/strmqm SERVERLESS`
+- Add the Objects to the QMGR: `/usr/mqm/bin/runmqsc SERVERLESS < serverless.mqsc`
+- Shutdown the QMGR: `/usr/mqm/bin/endmqm -i SERVERLESS`
+- Restart the QMGR: `/usr/mqm/bin/strmqm SERVERLESS`
+
+---
+#### Test and Enjoy
+
+-+Funeral Winter+-
