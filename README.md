@@ -3,6 +3,8 @@
 
 This is a small example of using [IBM Cloud Functions](https://cloud.ibm.com/functions/) to create a sample flow with different Actions with some Sequences that utilise IBM MQ, Cloudant DB and is writen in Java, PHP, and JavaScript 
 
+![Diagram of flow](https://github.com/bpaskin/IBM-Cloud-Functions/images/serverless.drawio.png)
+
 ---
 
 #### Prerequistes:
