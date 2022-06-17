@@ -85,5 +85,8 @@ The `EUROVISION.TRIGGER` in the `serverless.mqsc` file will need to be updated w
 
 ---
 #### Test and Enjoy
+To see the acitvations: `ibmcloud fn activation list`</br>
+To see a specific activation: `ibmcloud fn activation get <activation id>`
+
 
 -+Funeral Winter+-
