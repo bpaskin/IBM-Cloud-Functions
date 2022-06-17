@@ -18,11 +18,16 @@ All the steps can be done through the console.  Some, but not all, can be done u
 
 Create an [instance](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-creating-an-ibm-cloudant-instance-on-ibm-cloud-by-using-the-ibm-cloud-cli
 ):
-- login to the IBM Cloud and select which account to use (`ibmcloud login`)
-- Target the resource (`ibmcloud target -g default`)
-- Create an instance called `cloudant-serverless` (`ibmcloud resource service-instance-create cloudant-serverless cloudantnosqldb lite us-south -p '{"legacyCredentials": false}'
-- Generate the credentials (`ibmcloud resource service-key-create serverless-creds Manager --instance-name cloudant-serverless`)
-- Show the credentials (`ibmcloud resource service-key serverless-creds`)
+- login to the IBM Cloud and select which account to use </br>
+`ibmcloud login`
+- Target the resource </br>
+`ibmcloud target -g default`
+- Create an instance called </br>
+`cloudant-serverless` (`ibmcloud resource service-instance-create cloudant-serverless cloudantnosqldb lite us-south -p '{"legacyCredentials": false}'`
+- Generate the credentials </br>
+`ibmcloud resource service-key-create serverless-creds Manager --instance-name cloudant-serverless`
+- Show the credentials </br>
+`ibmcloud resource service-key serverless-creds`
 
 The next steps need to be done in the Console UI.
 - Select the `cloudant-serverless` instance of the DB
@@ -67,9 +72,12 @@ ibmcloud fn action create Eurovision/resultsui results.php --web true
 ```
 
 Endpoints:
-- Web page for voting: `ibmcloud fn action get Eurovision/voteui --url`
-- Web page for results: `ibmcloud fn action get Eurovision/resultsui --url`
-- Trigger endpoint for MQ: `ibmcloud fn action get Eurovision/updatingDB --url`
+- Web page for voting: </br>
+`ibmcloud fn action get Eurovision/voteui --url`
+- Web page for results: </br>
+`ibmcloud fn action get Eurovision/resultsui --url`
+- Trigger endpoint for MQ: </br>
+`ibmcloud fn action get Eurovision/updatingDB --url`
 
 ---
 #### IBM MQ Setup
@@ -77,16 +85,24 @@ This will setup a new QMGR that will accept messages for voting and then trigger
 
 The `EUROVISION.TRIGGER` in the `serverless.mqsc` file will need to be updated with the proper URL from the `Eurovision/updatingDB` Action.
 
-- Create the QMGR: `/usr/mqm/bin/crtmqm SERVERLESS`
-- Start the QMGR: `/usr/mqm/bin/strmqm SERVERLESS`
-- Add the Objects to the QMGR: `/usr/mqm/bin/runmqsc SERVERLESS < serverless.mqsc`
-- Shutdown the QMGR: `/usr/mqm/bin/endmqm -i SERVERLESS`
-- Restart the QMGR: `/usr/mqm/bin/strmqm SERVERLESS`
+- Create the QMGR: </br> 
+`/usr/mqm/bin/crtmqm SERVERLESS`
+- Start the QMGR: </br>
+`/usr/mqm/bin/strmqm SERVERLESS`
+- Add the Objects to the QMGR: </br>
+`/usr/mqm/bin/runmqsc SERVERLESS < serverless.mqsc`
+- Shutdown the QMGR: </br>
+`/usr/mqm/bin/endmqm -i SERVERLESS`
+- Restart the QMGR: </br>
+`/usr/mqm/bin/strmqm SERVERLESS`
 
 ---
 #### Test and Enjoy
-To see the acitvations: `ibmcloud fn activation list`</br>
-To see a specific activation: `ibmcloud fn activation get <activation id>`
+To see the acitvations: </br>
+`ibmcloud fn activation list`
+
+To see a specific activation: </br>
+`ibmcloud fn activation get <activation id>`
 
 
 -+Funeral Winter+-
