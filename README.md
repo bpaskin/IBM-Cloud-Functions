@@ -7,6 +7,11 @@ This is a small example of using [IBM Cloud Functions](https://cloud.ibm.com/fun
 
 ---
 
+### Update:
+- 28/6/2022 - Added a Node version of the results query
+- 28/6/2022 - Change the PHP results page to be synchronous since free IBM Cloud Function accounts only allow 10 simultaneous executions.
+
+---
 #### Prerequistes:
 - An [IBM Cloud Account](https://cloud.ibm.com)
 - The [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
