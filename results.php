@@ -7,10 +7,14 @@ function main(array $args) : array
 <html>
 	<head>
 		<title>Eurovision 2022 Results</title>
+	</head>
+	<body>
+        <img src=\"https://static.eurovision.tv/dist/assets/images/esc/2022/logo-black.b9b5bfc57b81d725d184..svg\">
+		<h1>Results</h1>
+		<p id=\"result\">
+		</p>
 		<script>
-			function sendJSON(name){
-				running++;
-
+			async function sendJSON(name){
 				// Creating a XHR object
 				let result = document.querySelector('.result');
 				let xhr = new XMLHttpRequest();
@@ -19,20 +23,13 @@ function main(array $args) : array
                 var url = currentUrl.replace(/resultsui/,'resultsQuery');
                 		
 				// open a connection
-				xhr.open(\"POST\", url, true);
+				xhr.open(\"POST\", url, false);
 	
 				// Set the request header i.e. which type of content you are sending
 				xhr.setRequestHeader(\"Content-Type\", \"application/json\");
 
 				// Create a state change callback
 				xhr.onreadystatechange = function () {
-                    running--;
-
-                    if (countries.length > 0) {
-                        var country = countries.shift();
-                        sendJSON(country)
-                    }
-
 					if (xhr.readyState === 4 && xhr.status === 200) {
                         console.log(name + \":\" + this.responseText);
 	
@@ -89,22 +86,12 @@ function main(array $args) : array
 		        \"Ukraine\",
 		        \"UnitedKingdom\"];
 
- 
-            var limit = 5;
-            var running = 0;
-
-            while(running < limit && countries.length > 0) {
+            while ( countries.length > 0) {
                 var country = countries.shift();
                 sendJSON(country);
             }
             
 		</script>
-	</head>
-	<body>
-        <img src=\"https://static.eurovision.tv/dist/assets/images/esc/2022/logo-black.b9b5bfc57b81d725d184..svg\">
-		<h1>Results</h1>
-		<p id=\"result\">
-		</p>
 		</body>
 </html>
 ";
