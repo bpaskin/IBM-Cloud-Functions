@@ -10,6 +10,7 @@ This is a small example of using [IBM Cloud Functions](https://cloud.ibm.com/fun
 ### Update:
 - 28/6/2022 - Added a Node version of the results query
 - 28/6/2022 - Change the PHP results page to be synchronous since free IBM Cloud Function accounts only allow 10 simultaneous executions.
+- 1/7/2022 - Changed back the results.php to async.  There is now a results_sync.php that is in pure php that is synchronous that can be used.
 
 ---
 #### Prerequistes:
